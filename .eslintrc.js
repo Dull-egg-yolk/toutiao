@@ -5,6 +5,7 @@ module.exports = {
   },
   'extends': [
     'plugin:vue/essential',
+    // 专门配置eslint
     '@vue/standard'
   ],
   rules: {
