@@ -77,6 +77,7 @@ export default {
       this.$refs.myForm.validate(function (isOk) {
         if (isOk) {
         // 校验成功
+          console.log(123)
         }
       })
     }
