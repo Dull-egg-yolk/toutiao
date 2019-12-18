@@ -22,7 +22,7 @@
           </el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button style="width:100%" type="primary" @click="login">登录</el-button>
+          <el-button v-model="loginForm.check" style="width:100%" type="primary" @click="login">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -44,7 +44,23 @@ export default {
       },
       //   验证登录表单的验证规则
       loginRules: {
-        // 自定义校验
+        // 校验规则
+        // key(字段名):value(数组)
+        phone: [{ required: true, message: '请输入您的手机号' }, {
+          pattern: /^1[3456789]\d{9}$/, message: '手机号码格式不正确'
+        }],
+        code: [{ required: true, message: '请输入您的验证码' }, {
+          pattern: /^\d{6}$/, message: '验证码格式不正确'
+        }],
+        // value指当前字段名
+        check: [{ validator: function (rule, value, callback) {
+          if (value) {
+            callback()
+          } else {
+            callback(new Error('必须同意'))
+          }
+        }
+        }]
       }
     }
   },
