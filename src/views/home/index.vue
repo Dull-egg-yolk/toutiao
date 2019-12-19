@@ -13,16 +13,9 @@
 </template>
 
 <script>
-// 引入左导航
-import homeaside from '../../components/home/home-aside'
-// 引入头部
-import homeheader from '../../components/home/home-header'
+
 export default {
-  // 注册组件
-  components: {
-    'home-aside': homeaside,
-    'home-header': homeheader
-  }
+
 }
 </script>
 

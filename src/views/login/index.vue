@@ -87,8 +87,14 @@ export default {
             data: this.loginForm
           }).then((res) => {
             console.log(res)
+            // 放到前端的缓存中  user-token令牌信息
+            window.localStorage.setItem('user-token', res.data.data.token)
+            // 编程式导航
+            this.$router.push('/home') // 登录成功 跳转到home页
             // 放参数报错
-          }).catch(() => {
+          }).catch((err) => {
+            console.log(err)
+
             this.$message({
               message: '用户名密码错误'
             })

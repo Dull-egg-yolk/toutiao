@@ -6,16 +6,17 @@
     </el-col>
     <el-col :span="6">
       <el-row type="flex" justify="end" align="middle">
-        <img src="../../assets/img/avatar.jpg" alt=""/>
-        <el-dropdown>
+        <!-- 三元表达式   -->
+        <img :src="userinfo.photo ? userinfo.photo : defultImg" alt=""/>
+        <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">
-            路飞
+            {{ userinfo.name }}
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>个人信息</el-dropdown-item>
-            <el-dropdown-item>git地址</el-dropdown-item>
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item command="info">个人信息</el-dropdown-item>
+            <el-dropdown-item command="git">git地址</el-dropdown-item>
+            <el-dropdown-item command="logout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-row>
@@ -24,7 +25,45 @@
 </template>
 
 <script>
-export default {}
+export default {
+  // 获取用户信息
+  data () {
+    return {
+      // 响应式数据
+      userinfo: {},
+      // 用require 把地址转成变量
+      defultImg: require('../../assets/img/avatar.jpg')
+    }
+  },
+  //  生命周期 查询数据
+  created () {
+    //   获取令牌信息
+    let token = window.localStorage.getItem('user-token')
+    this.$axios({
+      url: 'user/profile',
+      //   请求参数
+      headers: {
+        //  后台参数  Bearer 必须加空格
+        Authorization: 'Bearer ' + token
+      }
+    }).then((res) => {
+      // console.log(res)s
+
+      console.log(res.data)
+      this.userinfo = res.data.data
+    })
+  },
+  methods: {
+    handleCommand (command) {
+      // alert(1)
+      if (command === 'logout') {
+        window.localStorage.removeItem('user-token')
+        this.$router.push('/login')
+      }
+    }
+  }
+
+}
 </script>
 
 <style lang="less" scoped>
