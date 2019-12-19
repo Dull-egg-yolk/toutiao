@@ -7,8 +7,8 @@
       <!-- ref获取el-form实例 -->
       <el-form :model="loginForm" :rules="loginRules" ref="myForm">
         <!-- 绑定表单数据对象 -->
-        <el-form-item prop="phone">
-          <el-input placeholder="请输入手机号" v-model="loginForm.phone"></el-input>
+        <el-form-item prop="mobile">
+          <el-input placeholder="请输入手机号" v-model="loginForm.mobile"></el-input>
         </el-form-item>
         <el-form-item prop="code">
           <el-input placeholder="验证码" style="width:65%" v-model="loginForm.code"></el-input>
@@ -22,6 +22,7 @@
           </el-checkbox>
         </el-form-item>
         <el-form-item>
+          <!-- 点击登录调用后台接口 -->
           <el-button style="width:100%" type="primary" @click="login">登录</el-button>
         </el-form-item>
       </el-form>
@@ -30,13 +31,14 @@
 </template>
 
 <script>
+
 export default {
   data () {
     return {
       // 定义保单数据对象
       loginForm: {
         // 手机号
-        phone: '',
+        mobile: '',
         // 验证码
         code: '',
         // 是否勾选
@@ -46,7 +48,7 @@ export default {
       loginRules: {
         // 校验规则
         // key(字段名):value(数组)
-        phone: [{ required: true, message: '请输入您的手机号' }, {
+        mobile: [{ required: true, message: '请输入您的手机号' }, {
           pattern: /^1[3456789]\d{9}$/, message: '手机号码格式不正确'
         }],
         code: [{ required: true, message: '请输入您的验证码' }, {
@@ -74,10 +76,23 @@ export default {
     login () {
     // 对整个表单进行校验的方法，参数为一个回调函数
     // 该回调函数会在校验结束后被调用，并传入两个参数：是否校验成功和未通过校验的字段。若不传入回调函数，则会返回一个 promise
-      this.$refs.myForm.validate(function (isOk) {
+      this.$refs.myForm.validate(isOk => {
         if (isOk) {
         // 校验成功
-          console.log(123)
+        // 成功调用登录接口
+          // console.log(123)
+          this.$axios({
+            url: 'authorizations', // 请求地址
+            method: 'post',
+            data: this.loginForm
+          }).then((res) => {
+            console.log(res)
+            // 放参数报错
+          }).catch(() => {
+            this.$message({
+              message: '用户名密码错误'
+            })
+          })
         }
       })
     }
