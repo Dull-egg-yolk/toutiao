@@ -2,8 +2,8 @@
   <el-card>
     <!-- card自带的具名插槽 -->
     <bread-crumb slot="header">
-        <!-- 面包屑的具名插槽 -->
-        <template slot="title">评论列表</template>
+      <!-- 面包屑的具名插槽 -->
+      <template slot="title">评论列表</template>
     </bread-crumb>
     <el-table :data="list">
       <el-table-column label="标题" width="600" prop="title"></el-table-column>
@@ -11,8 +11,12 @@
       <el-table-column label="总评论数" prop="total_comment_count"></el-table-column>
       <el-table-column label="粉丝评论数" prop="fans_comment_count"></el-table-column>
       <el-table-column label="操作">
-        <el-buuton>修改</el-buuton>
-        <el-buuton></el-buuton>
+        <template slot-scope="obj">
+          <!-- {{obj.row.comment_status}} -->
+          <!-- 按钮的样式  elementUi -->
+          <el-button type="text" size='small'>修改</el-button>
+          <el-button type="text" size='small'>{{obj.row.comment_status ? '关闭评论' : '打开评论'}}</el-button>
+        </template>
       </el-table-column>
     </el-table>
   </el-card>
@@ -46,5 +50,4 @@ export default {
 </script>
 
 <style>
-
 </style>
