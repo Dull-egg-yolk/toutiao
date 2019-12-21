@@ -9,10 +9,12 @@ router.beforeEach(function (to, from, next) {
 // if(a.endsWith(b))
 // 判断字符串a 是不是以字符串b结尾.
   if (to.path.startsWith('/home')) {
+    // 获取token
     let token = window.localStorage.getItem('user-token')
     if (token) {
       next()
     } else {
+      // next('/') 或者 next({ path: '/' }): 跳转到一个不同的地址。当前的导航被中断，然后进行一个新的导航
       next('/login')
     }
   } else {

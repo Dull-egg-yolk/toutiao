@@ -1,5 +1,5 @@
 <template>
-  <el-row type="flex" justify="space-between">
+  <el-row type="flex" justify="space-between" class="row">
     <el-col :span="6">
       <i class="el-icon-s-unfold"></i>
       <span style="font-size:16px">江苏传智播客教育科技股份有限公司</span>
@@ -67,6 +67,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.row {
+  margin-top: 20px;
+}
 img{
     width: 40px;
     height: 40px;

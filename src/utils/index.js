@@ -34,6 +34,7 @@ axios.interceptors.response.use(function (result) {
   if (status === 400) {
     message = '手机号或者验证码错误'
   } else if (status === 401) {
+    window.localStorage.removeItem('user-token')
     router.push('/login')
   } else if (status === 403) {
     router.push('/login')
