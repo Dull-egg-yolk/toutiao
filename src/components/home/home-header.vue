@@ -38,19 +38,19 @@ export default {
   //  生命周期 查询数据
   created () {
     //   获取令牌信息
-    let token = window.localStorage.getItem('user-token')
+    // let token = window.localStorage.getItem('user-token')
     this.$axios({
-      url: 'user/profile',
+      url: 'user/profile'
       //   请求参数
-      headers: {
-        //  后台参数  Bearer 必须加空格
-        Authorization: 'Bearer ' + token
-      }
+      // headers: {
+      //   //  后台参数  Bearer 必须加空格
+      //   Authorization: 'Bearer ' + token
+      // }
     }).then((res) => {
-      // console.log(res)s
+      // console.log(res)
 
       console.log(res.data)
-      this.userinfo = res.data.data
+      this.userinfo = res.data
     })
   },
   methods: {

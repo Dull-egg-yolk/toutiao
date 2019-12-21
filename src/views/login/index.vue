@@ -89,16 +89,16 @@ export default {
             console.log(res)
             // 放到前端的缓存中  user-token令牌信息
             // 设置数据
-            window.localStorage.setItem('user-token', res.data.data.token)
+            window.localStorage.setItem('user-token', res.data.token)
             // 编程式导航
             this.$router.push('/home') // 登录成功 跳转到home页
             // 放参数报错
-          }).catch((err) => {
-            console.log(err)
+            // }).catch((err) => {
+            //   console.log(err)
 
-            this.$message({
-              message: '用户名密码错误'
-            })
+          //   this.$message({
+          //     message: '用户名密码错误'
+          //   })
           })
         }
       })
