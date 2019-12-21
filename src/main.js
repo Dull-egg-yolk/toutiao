@@ -14,6 +14,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import axios from './utils'
 // 引入 全局使用的
 import Component from './components'
+
 // // 在axios统一导入之前 设置一个常态值
 // axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
 // // 赋值全局对象
