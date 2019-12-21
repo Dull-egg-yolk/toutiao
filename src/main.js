@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-
+// 引入导航守卫
+import './navigation'
 // 引入初始化样式
 import './styles/index.less'
 // 引入element
