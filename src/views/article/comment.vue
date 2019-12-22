@@ -16,10 +16,26 @@
           <!-- 按钮的样式  elementUi -->
           <el-button type="text" size="small">修改</el-button>
           <!-- 传当前行数据 obj.row -->
-          <el-button @click="clickbtn(obj.row)" type="text" size="small">{{obj.row.comment_status ? '关闭评论' : '打开评论'}}</el-button>
+          <el-button
+            @click="clickbtn(obj.row)"
+            type="text"
+            size="small"
+          >{{obj.row.comment_status ? '关闭评论' : '打开评论'}}</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <!-- 分页 -->
+    <el-row type="flex" justify="center" align="middle">
+      <!-- 加参数 element里的分页 -->
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :current-page="page.currentPage"
+        :page-size="page.pageSize"
+        :total="page.total"
+        @current-change="pageChange"
+      ></el-pagination>
+    </el-row>
   </el-card>
 </template>
 
@@ -27,7 +43,17 @@
 export default {
   data () {
     return {
-      list: []
+      list: [],
+
+      page: {
+        // 当前页数
+        currentPage: 1,
+        // 总条数
+        total: 0,
+
+        // 每页多少条
+        pageSize: 10
+      }
     }
   },
   methods: {
@@ -38,11 +64,19 @@ export default {
       this.$axios({
         url: 'articles',
         // query查询参数给params
-        params: { response_type: 'comment' }
+
+        params: {
+          response_type: 'comment',
+          // 分页的参数加进来 page 页   per_page 每页多少条
+          page: this.page.currentPage,
+          per_page: this.page.pageSize
+        }
       }).then(res => {
-      // debuggers
+        // debuggers
         console.log(res)
         this.list = res.data.results
+        // 接口总数 等于 总条数 total_count 是后端接口给的
+        this.page.total = res.data.total_count
       })
     },
     // 点击开开或者关闭
@@ -61,7 +95,7 @@ export default {
           // 布尔类型  取反 如果是true 就是false
           data: { allow_comment: !row.comment_status }
           // 成功进then
-        }).then((res) => {
+        }).then(res => {
           // 提示信息
           this.$message({
             type: 'success',
@@ -69,21 +103,26 @@ export default {
           })
           // debugger
           this.getComment()
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'error',
-        //     message: '失败'
-        //   })
+          // }).catch(() => {
+          //   this.$message({
+          //     type: 'error',
+          //     message: '失败'
+          //   })
         })
       })
+    },
+    // 点击页码
+    // 参数 点几显示几
+    pageChange (newpage) {
+      // 当前页 赋值给newpage
+      this.page.currentPage = newpage
+      this.getComment()
     }
-
   },
   // 请求数据
   created () {
     this.getComment()
   }
-
 }
 </script>
 
