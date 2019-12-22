@@ -3,6 +3,11 @@
     <bread-crumb slot="header">
       <template slot="title">素材管理</template>
     </bread-crumb>
+    <el-row type="flex" justify="end">
+      <el-upload :http-request="uploading">
+        <el-button size="small" type="primary">点击上传</el-button>
+      </el-upload>
+    </el-row>
     <!-- el-tabs 的事件 tab-click -->
     <el-tabs v-model="activeName" @tab-click="changeTab">
       <el-tab-pane label="全部素材" name="all" style="overflow: hidden">
@@ -16,35 +21,34 @@
             </el-row>
           </el-card>
         </div>
-         <el-row type="flex" justify="center" align="middle">
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          :total="this.page.total"
-          :page-size="this.page.pageSize"
-          :current-page="this.page.currentPage"
-          @current-change="pageChange"
-        ></el-pagination>
-      </el-row>
+        <el-row type="flex" justify="center" align="middle">
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="this.page.total"
+            :page-size="this.page.pageSize"
+            :current-page="this.page.currentPage"
+            @current-change="pageChange"
+          ></el-pagination>
+        </el-row>
       </el-tab-pane>
 
       <el-tab-pane label="收藏素材" name="cell">
-         <div class="box">
+        <div class="box">
           <el-card v-for="item in list" :key="item.id" class="card">
             <img :src="item.url" alt />
-
           </el-card>
         </div>
-          <el-row type="flex" justify="center" align="middle">
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          :total="this.page.total"
-          :page-size="this.page.pageSize"
-          :current-page="this.page.currentPage"
-          @current-change="pageChange2"
-        ></el-pagination>
-      </el-row>
+        <el-row type="flex" justify="center" align="middle">
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="this.page.total"
+            :page-size="this.page.pageSize"
+            :current-page="this.page.currentPage"
+            @current-change="pageChange"
+          ></el-pagination>
+        </el-row>
       </el-tab-pane>
     </el-tabs>
   </el-card>
@@ -90,8 +94,21 @@ export default {
     pageChange (newpage) {
       this.page.currentPage = newpage
       this.getMaterial()
+    },
+    // 上传 图片
+    uploading (params) {
+      // 定义一个fromdata
+      let fromD = new FormData()
+      fromD.append('image', params.file)
+      this.$axios({
+        url: 'user/images',
+        method: 'post',
+        data: fromD
+      }).then((res) => {
+        debugger
+        this.getMaterial()
+      })
     }
-
   },
   created () {
     this.getMaterial()
@@ -119,7 +136,7 @@ export default {
       left: 0;
       bottom: 0;
       background-color: aquamarine;
-      font-size: 20px
+      font-size: 20px;
     }
   }
 }
