@@ -24,9 +24,11 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- 分页 -->
+    <!-- el-row 可以布局  -->
     <el-row type="flex" justify="center" align="middle">
       <!-- 加参数 element里的分页 -->
+      <!-- 分页自带的参数 当前页 总页数 每页的条数  三者缺一不可 -->
+      <!-- current-change  自带的点击分页 换页 -->
       <el-pagination
         background
         layout="prev, pager, next"
@@ -76,6 +78,7 @@ export default {
         console.log(res)
         this.list = res.data.results
         // 接口总数 等于 总条数 total_count 是后端接口给的
+        // 当前的总页数 = 接口的total——count 总条数
         this.page.total = res.data.total_count
       })
     },
@@ -111,7 +114,7 @@ export default {
         })
       })
     },
-    // 点击页码
+    // 点击页码 方法
     // 参数 点几显示几
     pageChange (newpage) {
       // 当前页 赋值给newpage
