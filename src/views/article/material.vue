@@ -3,7 +3,8 @@
     <bread-crumb slot="header">
       <template slot="title">素材管理</template>
     </bread-crumb>
-    <el-tabs v-model="activeName">
+    <!-- el-tabs 的事件 tab-click -->
+    <el-tabs v-model="activeName" @tab-click="changeTab">
       <el-tab-pane label="全部素材" name="all" style="overflow: hidden">
         <div class="box">
           <el-card v-for="item in list" :key="item.id" class="card">
@@ -41,7 +42,7 @@
           :total="this.page.total"
           :page-size="this.page.pageSize"
           :current-page="this.page.currentPage"
-          @current-change="pageChange"
+          @current-change="pageChange2"
         ></el-pagination>
       </el-row>
       </el-tab-pane>
@@ -79,11 +80,18 @@ export default {
         this.page.total = res.data.total_count
       })
     },
-    // 点击切换页码
+    // tab-click,tab被选中时触发,被选中的标签 tab 实例
+    changeTab () {
+      this.page.currentPage = 1
+      this.getMaterial()
+      // alert(this.activeName)
+    },
+    // 点击页码切换全部图片
     pageChange (newpage) {
       this.page.currentPage = newpage
       this.getMaterial()
     }
+
   },
   created () {
     this.getMaterial()
