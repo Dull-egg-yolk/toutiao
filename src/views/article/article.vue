@@ -45,10 +45,11 @@
     <el-row type="flex" justify="space-between"  v-for="item in list" :key="item.id.toString()" style="margin-bottom:40px">
       <el-col :span="16">
         <el-row type="flex">
-          <img src="../../assets/img/back.png" alt style="width:100px;hright:100px" />
+          <img :src="item.cover.images.length ? item.cover.images[0] : defaultImg" alt style="width:100px;hright:100px" />
           <div class="title">
             <span>{{item.title}}</span>
-            <el-tag class="lable">标签一</el-tag>
+            <!-- v - bind    插值表达式-->
+            <el-tag :type = "item.status | filterType" class="lable">{{item.status | filterStatus}}</el-tag>
             <span>{{item.pubdate}}</span>
           </div>
         </el-row>
@@ -64,6 +65,7 @@
 </template>
 
 <script>
+
 export default {
   data () {
     return {
@@ -75,9 +77,44 @@ export default {
       // 定义一个接收数据
       channels: [],
       // 定义一个接受列表的数据
-      list: []
+      list: [],
+
+      // 如果空 用默认
+      defaultImg: require('../../assets/img/back.png')
     }
   },
+  // 过滤器
+  filters: {
+    filterStatus (value) {
+      switch (value) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '已发表'
+        case 3:
+          return '审核失败'
+        default:
+          break
+      }
+    },
+    filterType (value) {
+      switch (value) {
+        case 0:
+          return 'warning'
+        case 1:
+          return 'info'
+        case 2:
+          return ''
+        case 3:
+          return 'danger'
+        default:
+          break
+      }
+    }
+  },
+
   methods: {
     // 获取下拉列表
     getChannels () {
