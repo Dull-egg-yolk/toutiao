@@ -85,7 +85,7 @@ export default {
     // 点击开开或者关闭
     // 传参row里面是 id title 等......
     clickbtn (row) {
-      // debugger
+      debugger
       let confirm = row.comment_status ? '关闭' : '打开'
       this.$confirm(`是否要${confirm}评论`).then(() => {
         // alert(1)

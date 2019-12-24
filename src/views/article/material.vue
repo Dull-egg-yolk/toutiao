@@ -4,7 +4,7 @@
       <template slot="title">素材管理</template>
     </bread-crumb>
     <el-row type="flex" justify="end">
-      <el-upload :http-request="uploading">
+      <el-upload :http-request="uploading" action="">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
     </el-row>
@@ -16,8 +16,9 @@
             <img :src="item.url" alt />
             <el-row type="flex" justify="space-around" align="middle" class="row">
               <!-- 图标 -->
-              <i class="el-icon-star-on"></i>
-              <i class="el-icon-delete-solid"></i>
+              <!-- 方法传进来参数 -->
+              <i @click="collectOrcancel(item)" :style="{color:item.is_collected ? 'red' : ''}" class="el-icon-star-on"></i>
+              <i @click="del(item)" class="el-icon-delete-solid"></i>
             </el-row>
           </el-card>
         </div>
@@ -108,6 +109,39 @@ export default {
         debugger
         this.getMaterial()
       })
+    },
+
+    // 点击收藏或取消收藏
+    collectOrcancel (row) {
+      this.$axios({
+        url: `user/images/${row.id}`,
+        method: 'put',
+        // 是否收藏
+        data: { collect: !row.is_collected }
+      }).then(() => {
+        // 重新调用
+        this.getMaterial()
+        this.$message({
+          type: 'success',
+          message: '收藏成功'
+        })
+      })
+    },
+    // 删除
+    del (row) {
+      this.$confirm('是否要删除').then(() => {
+        this.$axios({
+          url: `user/images/${row.id}`,
+          method: 'delete'
+        }).then(() => {
+          // 重新调用
+          this.getMaterial()
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+        })
+      })
     }
   },
   created () {
@@ -137,6 +171,9 @@ export default {
       bottom: 0;
       background-color: aquamarine;
       font-size: 20px;
+      i {
+        cursor: pointer;
+      }
     }
   }
 }

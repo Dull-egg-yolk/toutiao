@@ -26,7 +26,7 @@ axios.interceptors.request.use(function (config) {
 // 数字失真问题
 axios.defaults.transformResponse = [function (data) {
   // debugger
-  return jsonBig.parse(data)
+  return data ? jsonBig.parse(data) : {}
 }]
 // 响应拦截
 axios.interceptors.response.use(function (result) {
