@@ -25,6 +25,10 @@ const routes = [
         component: Home2
       },
       {
+        path: '/home/publish/:targetId',
+        component: Arpublish
+      },
+      {
         path: '/home/publish',
         component: Arpublish
       },

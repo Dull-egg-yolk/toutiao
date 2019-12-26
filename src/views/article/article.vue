@@ -69,7 +69,7 @@
       </el-col>
       <el-col :span="6">
         <el-row type="flex" justify="end" class="tally">
-          <span>
+          <span @click="modification(item.id)">
             <i class="el-icon-edit"></i>修改
           </span>
           <span @click="del(item.id)">
@@ -201,6 +201,12 @@ export default {
           this.changeCondition()
         })
       })
+    },
+    // 点击修改
+    // 路由传参
+    modification (id) {
+      // 跳转到发布页面
+      this.$router.push(`./publish/${id.toString()}`)
     }
 
   },
