@@ -27,7 +27,7 @@
         <el-menu-item index="/home/fans-pic">粉丝画像</el-menu-item>
         <el-menu-item index="/home/fans-list">粉丝列表</el-menu-item>
       </el-submenu>
-      <el-menu-item index="4">
+      <el-menu-item index="/account">
         <span slot="title">账户信息</span>
       </el-menu-item>
     </el-menu>

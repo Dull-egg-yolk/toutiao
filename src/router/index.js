@@ -8,6 +8,7 @@ import Arpublish from '../views/article/publish.vue'
 import Ararticle from '../views/article/article.vue'
 import Arcomment from '../views/article/comment.vue'
 import Armaterial from '../views/article/material.vue'
+import Aaccount from '../views/account/index.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -43,6 +44,10 @@ const routes = [
       {
         path: '/home/material',
         component: Armaterial
+      },
+      {
+        path: '/account',
+        component: Aaccount
       }
     ]
   },
