@@ -18,11 +18,11 @@
           <el-radio :label="0">无图</el-radio>
           <el-radio :label="-1">自动</el-radio>
         </el-radio-group>
-        {{formData.cover.images}}
+        <!-- {{formData.cover.images}} -->
       </el-form-item>
 
       <!-- 放置封面组件 父组件给子组件传值 给谁传就在谁的标签上写属性-->
-      <cover-image :list="formData.cover.images"></cover-image>
+      <cover-image @clickImg = "rerveImg" :list="formData.cover.images"></cover-image>
       <el-form-item label="频道" prop="channel_id">
         <el-select v-model="formData.channel_id" placeholder="请选择频道">
           <el-option v-for="item in list" :key="item.id" :label="item.name" :value="item.id"></el-option>
@@ -65,6 +65,12 @@ export default {
   },
 
   methods: {
+    // 再次接收地址
+    rerveImg (img, index) {
+      debugger
+      // imgage是个数组
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => i === index ? img : item)
+    },
     // change事件
     changeType () {
       if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
