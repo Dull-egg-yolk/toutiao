@@ -9,16 +9,20 @@
         <el-input style="width :60%" v-model="formData.title"></el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <el-input type="textarea" v-model="formData.content"></el-input>
+        <quill-editor style="height:300px;" type="textarea" v-model="formData.content"></quill-editor>
       </el-form-item>
-      <el-form-item label="封面" prop="type">
+      <el-form-item label="封面" prop="type" style="margin-top:100px">
         <el-radio-group v-model="formData.cover.type">
-          <el-radio label="单图"></el-radio>
-          <el-radio label="三图"></el-radio>
-          <el-radio label="无图"></el-radio>
-          <el-radio label="自动"></el-radio>
+          <el-radio :label="1">单图</el-radio>
+          <el-radio :label="3">三图</el-radio>
+          <el-radio :label="0">无图</el-radio>
+          <el-radio :label="-1">自动</el-radio>
         </el-radio-group>
+        {{formData.cover.images}}
       </el-form-item>
+
+      <!-- 放置封面组件 父组件给子组件传值 给谁传就在谁的标签上写属性-->
+      <cover-image :list="formData.cover.images"></cover-image>
       <el-form-item label="频道" prop="channel_id">
         <el-select v-model="formData.channel_id" placeholder="请选择频道">
           <el-option v-for="item in list" :key="item.id" :label="item.name" :value="item.id"></el-option>
@@ -131,6 +135,7 @@ export default {
     $route: function (to, from) {
       if (Object.keys(to.params).length) {
         //  有参数  => 修改
+        this.getArticleId(to.params.targetId)
       } else {
         // 没有参数  => 发布 // 没有参数  => 发布
         this.formData = {
@@ -142,9 +147,20 @@ export default {
           }
         }
       }
+    },
+    'formData.cover.type': function () {
+      // debugger
+      if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
+        this.formData.cover.images = []
+        // alert(1)
+      } else if (this.formData.cover.type === 1) {
+        this.formData.cover.images = ['']
+      } else if (this.formData.cover.type === 3) {
+        this.formData.cover.images = ['', '', '']
+      }
     }
-
   },
+
   created () {
     this.getChannels()
     // 获取id  判断有没有id  有就是修改 没有就是发布
