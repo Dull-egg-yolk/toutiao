@@ -25,6 +25,8 @@
 </template>
 
 <script>
+// 引入eventBus
+import eventBus from '../../utils/eventBus'
 export default {
   // 获取用户信息
   data () {
@@ -39,18 +41,9 @@ export default {
   created () {
     //   获取令牌信息
     // let token = window.localStorage.getItem('user-token')
-    this.$axios({
-      url: 'user/profile'
-      //   请求参数
-      // headers: {
-      //   //  后台参数  Bearer 必须加空格
-      //   Authorization: 'Bearer ' + token
-      // }
-    }).then((res) => {
-      // console.log(res)
-
-      console.log(res.data)
-      this.userinfo = res.data
+    this.getShow()
+    eventBus.$on('public', (res) => {
+      this.getShow()
     })
   },
   methods: {
@@ -60,6 +53,21 @@ export default {
         window.localStorage.removeItem('user-token')
         this.$router.push('/login')
       }
+    },
+    getShow () {
+      this.$axios({
+        url: 'user/profile'
+      //   请求参数
+      // headers: {
+      //   //  后台参数  Bearer 必须加空格
+      //   Authorization: 'Bearer ' + token
+      // }
+      }).then((res) => {
+      // console.log(res)
+
+        console.log(res.data)
+        this.userinfo = res.data
+      })
     }
   }
 

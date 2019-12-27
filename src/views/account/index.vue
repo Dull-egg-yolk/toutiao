@@ -1,10 +1,11 @@
 <template>
-  <el-card>
+  <el-card v-loading="loading">
     <bread-crumb slot="header">
       <template slot="title">账户信息</template>
     </bread-crumb>
-    <el-upload class="upload" action="">
-        <img src="../../assets/img/hai.png" alt="">
+    <!-- http-request覆盖默认的上传行为，可以自定义上传的实现function -->
+    <el-upload class="upload" action="" :show-file-list="false" :http-request="uploadImg">
+        <img :src="formData.photo ? formData.photo : defaultImg" alt="">
     </el-upload>
     <el-form label-width="100px" :model="formData" :rules="rules" ref="myform">
       <el-form-item label="用户名" prop="name">
@@ -27,9 +28,12 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus'
 export default {
   data () {
     return {
+
+      loading: false,
       formData: {
         name: '',
         intro: '',
@@ -47,10 +51,30 @@ export default {
           { required: true, message: '邮箱不能为空' },
           { pattern: /^([a-zA-Z]|[0-9])(\w|-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/ }
         ]
-      }
+      },
+      defaultImg: require('../../assets/img/hai.png')
     }
   },
   methods: {
+    //   上传图片
+    uploadImg (params) {
+      console.log(this.formData.photo, params)
+
+      this.loading = true
+      let data = new FormData()
+      data.append('photo', params.file)
+      this.$axios({
+        url: 'user/photo',
+        method: 'patch',
+        data
+      }).then((res) => {
+        this.formData.photo = res.data.photo
+        console.log(res)
+
+        this.loading = false
+      })
+    },
+    //   获取用户数据信息
     getInformation () {
       this.$axios({
         url: 'user/profile'
@@ -72,6 +96,7 @@ export default {
               type: 'success',
               message: '提交成功'
             })
+            eventBus.$emit('public')
           })
         }
       })
