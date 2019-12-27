@@ -12,7 +12,7 @@
         <quill-editor style="height:300px;" type="textarea" v-model="formData.content"></quill-editor>
       </el-form-item>
       <el-form-item label="封面" prop="type" style="margin-top:100px">
-        <el-radio-group v-model="formData.cover.type">
+        <el-radio-group v-model="formData.cover.type" @change="changeType">
           <el-radio :label="1">单图</el-radio>
           <el-radio :label="3">三图</el-radio>
           <el-radio :label="0">无图</el-radio>
@@ -65,6 +65,17 @@ export default {
   },
 
   methods: {
+    // change事件
+    changeType () {
+      if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
+        this.formData.cover.images = []
+        // alert(1)
+      } else if (this.formData.cover.type === 1) {
+        this.formData.cover.images = ['']
+      } else if (this.formData.cover.type === 3) {
+        this.formData.cover.images = ['', '', '']
+      }
+    },
     // 获取下拉列表
     getChannels () {
       this.$axios({
@@ -86,7 +97,7 @@ export default {
             params: { draft },
             data: this.formData
           }).then(res => {
-          //   // 跳转到内容列表
+            //   // 跳转到内容列表
             this.$router.push('/home/article')
           })
           // // 解构赋值
@@ -120,7 +131,7 @@ export default {
     getArticleId (targetId) {
       this.$axios({
         url: `articles/${targetId}`
-      }).then((res) => {
+      }).then(res => {
         this.formData = res.data
       })
     }
@@ -147,18 +158,18 @@ export default {
           }
         }
       }
-    },
-    'formData.cover.type': function () {
-      // debugger
-      if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
-        this.formData.cover.images = []
-        // alert(1)
-      } else if (this.formData.cover.type === 1) {
-        this.formData.cover.images = ['']
-      } else if (this.formData.cover.type === 3) {
-        this.formData.cover.images = ['', '', '']
-      }
     }
+    // 'formData.cover.type': function () {
+    //   // debugger
+    //   if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
+    //     this.formData.cover.images = []
+    //     // alert(1)
+    //   } else if (this.formData.cover.type === 1) {
+    //     this.formData.cover.images = ['']
+    //   } else if (this.formData.cover.type === 3) {
+    //     this.formData.cover.images = ['', '', '']
+    //   }
+    // }
   },
 
   created () {
