@@ -84,35 +84,33 @@ export default {
     },
     // 点击开开或者关闭
     // 传参row里面是 id title 等......
-    clickbtn (row) {
+    async clickbtn (row) {
       debugger
       let confirm = row.comment_status ? '关闭' : '打开'
-      this.$confirm(`是否要${confirm}评论`).then(() => {
-        // alert(1)
-        // 请求接口
-        this.$axios({
-          url: 'comments/status',
-          method: 'put',
-          // row
-          params: { article_id: row.id.toString() },
-          // 布尔类型  取反 如果是true 就是false
-          data: { allow_comment: !row.comment_status }
-          // 成功进then
-        }).then(res => {
-          // 提示信息
-          this.$message({
-            type: 'success',
-            message: '成功'
-          })
-          // debugger
-          this.getComment()
-          // }).catch(() => {
-          //   this.$message({
-          //     type: 'error',
-          //     message: '失败'
-          //   })
-        })
+      await this.$confirm(`是否要${confirm}评论`)
+      // alert(1)
+      // 请求接口
+      await this.$axios({
+        url: 'comments/status',
+        method: 'put',
+        // row
+        params: { article_id: row.id.toString() },
+        // 布尔类型  取反 如果是true 就是false
+        data: { allow_comment: !row.comment_status }
+        // 成功进then
       })
+      // 提示信息
+      this.$message({
+        type: 'success',
+        message: '成功'
+      })
+      // debugger
+      this.getComment()
+      // }).catch(() => {
+      //   this.$message({
+      //     type: 'error',
+      //     message: '失败'
+      //   })
     },
     // 点击页码 方法
     // 参数 点几显示几

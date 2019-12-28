@@ -134,12 +134,11 @@ export default {
       })
     },
     // 点击修改获取文章
-    getArticleId (targetId) {
-      this.$axios({
+    async getArticleId (targetId) {
+      let res = await this.$axios({
         url: `articles/${targetId}`
-      }).then(res => {
-        this.formData = res.data
       })
+      this.formData = res.data
     }
   },
   // 动态路由vue 提醒一下，当使用路由参数时，
