@@ -1,7 +1,8 @@
 <template>
   <el-row type="flex" justify="space-between" class="row">
     <el-col :span="6">
-      <i class="el-icon-s-unfold"></i>
+      <!-- v-bind 绑定class属性 -->
+      <i @click="collapseOropen" :class="{'el-icon-s-unfold':collapse,'el-icon-s-fold':!collapse}"></i>
       <span style="font-size:16px">江苏传智播客教育科技股份有限公司</span>
     </el-col>
     <el-col :span="6">
@@ -31,6 +32,7 @@ export default {
   // 获取用户信息
   data () {
     return {
+      collapse: false,
       // 响应式数据
       userinfo: {},
       // 用require 把地址转成变量
@@ -47,6 +49,13 @@ export default {
     })
   },
   methods: {
+    // 折叠面板
+    collapseOropen () {
+      // 取反
+      this.collapse = !this.collapse
+      // 触发事件 通知用eventBus
+      eventBus.$emit('changeCollapse')
+    },
     handleCommand (command) {
       // alert(1)
       if (command === 'logout') {

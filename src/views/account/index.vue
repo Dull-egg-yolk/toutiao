@@ -62,6 +62,7 @@ export default {
 
       this.loading = true
       let data = new FormData()
+      // 放一个photo里的属性file
       data.append('photo', params.file)
       this.$axios({
         url: 'user/photo',
@@ -96,6 +97,7 @@ export default {
               type: 'success',
               message: '提交成功'
             })
+            // eventBus
             eventBus.$emit('public')
           })
         }
